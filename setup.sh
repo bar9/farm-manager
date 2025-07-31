@@ -73,7 +73,7 @@ docker-compose exec www drush cr
 # Generate login link
 echo ""
 echo "🔗 Generating one-time login link..."
-docker-compose exec www drush uli
+docker-compose exec www drush uli --uri=http://localhost:8080
 
 echo ""
 echo "✨ Setup complete! farmOS is ready at http://localhost:8080"
