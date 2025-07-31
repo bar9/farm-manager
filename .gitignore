@@ -7,8 +7,22 @@ www/*
 www/web/*
 !www/web/sites/
 
+# Drupal specific ignores
+www/web/core/
+www/web/modules/contrib/
+www/web/themes/contrib/
+www/web/profiles/farm/
+www/vendor/
+www/composer.lock
+www/web/sites/*/files/
+www/web/sites/*/private/
+www/web/sites/*/settings.local.php
+www/web/sites/*/services.local.yml
+
 # IDE files
 .idea/
+*.iml
+.vscode/
 
 # OS files
 .DS_Store
@@ -18,3 +32,7 @@ Thumbs.db
 *.tmp
 *.swp
 *~
+*.log
+
+# Git repositories (prevent nested repos)
+**/.git/
