@@ -1,0 +1,20 @@
+# Database files
+db/
+
+# Ignore everything in www except web/sites
+www/*
+!www/web/
+www/web/*
+!www/web/sites/
+
+# IDE files
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+*~
