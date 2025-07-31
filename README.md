@@ -1,59 +1,59 @@
-🌾 farmOS Development Environment
-A Docker-based development environment for farmOS — an open-source farm management system.
+# 🌾 farmOS Development Environment
 
-✅ Prerequisites
+A **Docker-based development environment** for [farmOS](https://farmos.org/) — an open-source farm management system.
+
+---
+
+## ✅ Prerequisites
+
 Make sure you have the following installed:
 
-Docker & Docker Compose
+- Docker & Docker Compose  
+- Git  
+- A code editor (e.g. **PHPStorm** recommended for PHP development)
 
-Git
+---
 
-A code editor (e.g. PHPStorm recommended for PHP development)
+## 🚀 Quick Start
 
-🚀 Quick Start
-Clone the Repository
+### 1. Clone the Repository
 
-bash
-Kopieren
-Bearbeiten
+```bash
 git clone <your-repo-url>
 cd farm-manager
-Run the Setup Script
+```
 
-bash
-Kopieren
-Bearbeiten
+### 2. Run the Setup Script
+
+```bash
 ./setup.sh
-This will:
+```
 
-Start Docker containers (PostgreSQL + farmOS)
+This script will:
 
-Install composer dependencies
+- Start Docker containers (PostgreSQL + farmOS)
+- Install composer dependencies
+- Install farmOS with development settings
+- Create an admin account (`admin` / `admin`)
+- Generate a one-time login link
 
-Install farmOS with development settings
+### 3. Access farmOS
 
-Create an admin account (admin / admin)
+- Web interface: [http://localhost:8080](http://localhost:8080)
+- Login using:
+  - Username: `admin`
+  - Password: `admin`
+  - Or use the generated one-time login link
 
-Generate a one-time login link
+⚠️ **Important**: Change the admin password after first login!
 
-Access farmOS
+---
 
-Open http://localhost:8080
+## 🛠️ Manual Installation (Alternative)
 
-Login using the generated one-time link or:
-
-Username: admin
-
-Password: admin
-
-⚠️ Important: Change the admin password after first login!
-
-🛠️ Manual Installation (Alternative)
 If you prefer a manual setup:
 
-bash
-Kopieren
-Bearbeiten
+```bash
 # Start containers
 docker-compose up -d
 
@@ -67,10 +67,13 @@ docker-compose exec www drush site:install farm \
   --account-name=admin \
   --account-pass=your-secure-password \
   --yes
-📁 Project Structure
-plaintext
-Kopieren
-Bearbeiten
+```
+
+---
+
+## 📁 Project Structure
+
+```plaintext
 farm-manager/
 ├── db/                  # PostgreSQL data (git-ignored)
 ├── www/                 # farmOS application root
@@ -81,11 +84,15 @@ farm-manager/
 ├── docker-compose.yml         # Docker services config
 ├── .gitignore                 # Tracks only sites/ content
 └── CLAUDE.md                  # AI assistant notes
-⚙️ Common Development Tasks
-Drush Commands
-bash
-Kopieren
-Bearbeiten
+```
+
+---
+
+## ⚙️ Common Development Tasks
+
+### Drush Commands
+
+```bash
 # Clear caches
 docker-compose exec www drush cr
 
@@ -101,10 +108,11 @@ docker-compose exec www drush updatedb
 # Export / Import config
 docker-compose exec www drush config:export
 docker-compose exec www drush config:import
-Code Quality
-bash
-Kopieren
-Bearbeiten
+```
+
+### Code Quality
+
+```bash
 # CodeSniffer
 docker-compose exec www vendor/bin/phpcs --standard=phpcs.xml web/modules/custom
 
@@ -113,10 +121,11 @@ docker-compose exec www vendor/bin/phpstan analyse --configuration=phpstan.neon
 
 # PHPUnit
 docker-compose exec www vendor/bin/phpunit --configuration=phpunit.xml
-Database Management
-bash
-Kopieren
-Bearbeiten
+```
+
+### Database Management
+
+```bash
 # PostgreSQL shell
 docker-compose exec db psql -U farm -d farm
 
@@ -125,109 +134,121 @@ docker-compose exec db pg_dump -U farm farm > backup.sql
 
 # Restore
 docker-compose exec db psql -U farm farm < backup.sql
-🔁 Development Workflow
-1. Custom Module Development
-Create in www/web/sites/all/modules/custom/
+```
 
-Follow Drupal coding standards
+---
 
-Write tests for new features
+## 🔁 Development Workflow
 
-2. Theme Customization
-farmOS uses the Gin admin theme
+### 1. Custom Module Development
 
-Add custom themes in:
-www/web/sites/all/themes/custom/
+- Create modules in:  
+  `www/web/sites/all/modules/custom/`
+- Follow [Drupal coding standards](https://www.drupal.org/docs/develop/standards)
+- Write automated tests where possible
 
-Gin Theme Docs
+### 2. Theme Customization
 
-3. Configuration Management
-Export config:
+- farmOS uses the **Gin** admin theme
+- Add themes in:  
+  `www/web/sites/all/themes/custom/`
+- Refer to the [Gin Theme Docs](https://www.drupal.org/docs/contributed-themes/gin-admin-theme/custom-theming)
 
-bash
-Kopieren
-Bearbeiten
-docker-compose exec www drush config:export
-Stored in:
-www/web/sites/default/files/config_*/
+### 3. Configuration Management
 
-🗂 File Storage
-farmOS stores files in:
+- Export config:  
+  ```bash
+  docker-compose exec www drush config:export
+  ```
+- Stored in:  
+  `www/web/sites/default/files/config_*/`
 
-Public files:
-www/web/sites/default/files/
+---
 
-Private files:
-www/web/sites/default/private/
+## 🗂 File Storage
 
-Check private path with:
+farmOS uses two file storage locations:
 
-bash
-Kopieren
-Bearbeiten
+- **Public files**:  
+  `www/web/sites/default/files/` — accessible by anyone
+
+- **Private files**:  
+  `www/web/sites/default/private/` — secure storage (e.g. logs, uploads)
+
+To verify private file storage:
+
+```bash
 docker-compose exec www drush config:get system.file path.private
-🐞 Debugging
-XDebug Setup
-Already pre-configured in docker-compose.override.yml
+```
 
-In PHPStorm:
+---
 
-Set up PHP Remote Debug
+## 🐞 Debugging
 
-Server name: localhost
+### Enable XDebug
 
-Path mapping: /opt/drupal
+- XDebug is pre-configured in `docker-compose.override.yml`
+- To use with PHPStorm:
+  1. Set up a *PHP Remote Debug* config
+  2. Server: `localhost`
+  3. Map project path to `/opt/drupal`
 
-Logs
-bash
-Kopieren
-Bearbeiten
-# PHP / Apache
+### View Logs
+
+```bash
+# PHP/Apache logs
 docker-compose logs -f www
 
-# PostgreSQL
+# PostgreSQL logs
 docker-compose logs -f db
 
-# Drupal watchdog
+# Drupal watchdog logs
 docker-compose exec www drush watchdog:show
-🧯 Troubleshooting
-Container Won’t Start?
-bash
-Kopieren
-Bearbeiten
+```
+
+---
+
+## 🧯 Troubleshooting
+
+### Container Won’t Start?
+
+```bash
 # Check for port conflicts
 lsof -i :8080
 lsof -i :5432
 
-# Reset all (WARNING: data loss)
+# Reset containers (WARNING: data loss)
 docker-compose down -v
 docker-compose up -d
-Permission Issues
-bash
-Kopieren
-Bearbeiten
+```
+
+### Permission Issues
+
+```bash
+# Reset file permissions
 docker-compose exec www chown -R www-data:www-data /opt/drupal/web/sites/default/files
-DB Connection Issues
-Host: db
+```
 
-DB: farm
+### Database Connection Details
 
-User: farm
+- Host: `db` (from inside containers)
+- Database: `farm`
+- Username: `farm`
+- Password: `farm`
 
-Password: farm
+---
 
-📚 Additional Resources
-🌱 farmOS Documentation
+## 📚 Additional Resources
 
-📊 farmOS Data Model
+- 🌱 [farmOS Documentation](https://farmos.org/)  
+- 📊 [farmOS Data Model](https://farmos.org/model/)  
+- 🛠 [farmOS Development Guide](https://farmos.org/development/)  
+- 🐘 [Drupal Documentation](https://www.drupal.org/docs)  
+- 🎨 [Gin Theme Docs](https://www.drupal.org/docs/contributed-themes/gin-admin-theme)
 
-🛠 farmOS Dev Guide
+---
 
-🐘 Drupal Documentation
+## 📄 License
 
-🎨 Gin Theme Docs
-
-📄 License
-This project is licensed under the GPL-2.0+ license.
-See the official farmOS repository for more details.
-
+This project is licensed under the **GPL-2.0+** license.  
+See the official [farmOS repository](https://github.com/farmOS/farmOS) for full license details.
