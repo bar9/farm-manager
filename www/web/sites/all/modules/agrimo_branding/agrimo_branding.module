@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for Agrimo Branding module.
+ */
+
+use Drupal\Core\Url;
+use Drupal\Core\Render\Markup;
+
+/**
+ * Implements hook_preprocess_HOOK() for block templates.
+ */
+function agrimo_branding_preprocess_block(&$variables) {
+  $module_path = \Drupal::service('extension.list.module')->getPath('agrimo_branding');
+  
+  // Handle branding block
+  if (isset($variables['plugin_id']) && $variables['plugin_id'] == 'system_branding_block') {
+    $variables['site_logo'] = '/' . $module_path . '/images/agrimo-logo.png';
+    if (isset($variables['content']['site_logo'])) {
+      $variables['content']['site_logo']['#uri'] = $module_path . '/images/agrimo-logo.png';
+    }
+  }
+  
+  // Handle all powered by blocks including the specific farm_powered block
+  $powered_by_blocks = ['farm_powered_by_block', 'system_powered_by_block'];
+  if (isset($variables['plugin_id']) && in_array($variables['plugin_id'], $powered_by_blocks)) {
+    $variables['content'] = [
+      '#markup' => Markup::create('<span>Powered by <a href="https://www.agrimo.ch" target="_blank">Agrimo</a></span>'),
+    ];
+  }
+  
+  // Also handle by block ID
+  if (isset($variables['elements']['#id']) && $variables['elements']['#id'] == 'farm_powered') {
+    $variables['content'] = [
+      '#markup' => Markup::create('<span>Powered by <a href="https://www.agrimo.ch" target="_blank">Agrimo</a></span>'),
+    ];
+  }
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function agrimo_branding_page_attachments_alter(array &$attachments) {
+  $attachments['#attached']['library'][] = 'agrimo_branding/branding';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for html templates.
+ */
+function agrimo_branding_preprocess_html(&$variables) {
+  $module_path = \Drupal::service('extension.list.module')->getPath('agrimo_branding');
+  $variables['agrimo_logo'] = '/' . $module_path . '/images/agrimo-logo.png';
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for page templates.
+ */
+function agrimo_branding_preprocess_page(&$variables) {
+  $module_path = \Drupal::service('extension.list.module')->getPath('agrimo_branding');
+  if (isset($variables['site'])) {
+    $variables['site']['logo'] = '/' . $module_path . '/images/agrimo-logo.png';
+  }
+  if (isset($variables['logo'])) {
+    $variables['logo'] = '/' . $module_path . '/images/agrimo-logo.png';
+  }
+}

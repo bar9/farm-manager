@@ -1,0 +1,7 @@
+name: 'Agrimo Branding'
+type: module
+description: 'Custom branding for Agrimo - replaces logo and footer text'
+package: Agrimo
+core_version_requirement: ^10 || ^11
+dependencies:
+  - drupal:system

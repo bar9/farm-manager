@@ -1,0 +1,10 @@
+branding:
+  version: 1.x
+  css:
+    theme:
+      css/agrimo-branding.css: {}
+  js:
+    js/agrimo-branding.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

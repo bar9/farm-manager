@@ -1,0 +1,35 @@
+/* Override farmOS logo */
+.gin-secondary-toolbar__brand img,
+.toolbar-bar .toolbar-item img.toolbar-icon,
+.block-system-branding-block img,
+img.site-logo {
+  content: url('/sites/all/modules/agrimo_branding/images/agrimo-logo.png') !important;
+  max-height: 40px !important;
+  width: auto !important;
+}
+
+/* Override powered by text - target the farmOS footer specifically */
+.farm-powered-by,
+.block-farm-powered-by-block,
+#block-gin-powered,
+#block-farm-powered-by {
+  display: none !important;
+}
+
+/* Add custom Agrimo powered by text */
+.farm-powered-by:after,
+.block-farm-powered-by-block:after,
+#block-gin-powered:after,
+#block-farm-powered-by:after {
+  content: 'Powered by Agrimo';
+  display: block !important;
+}
+
+/* Style the Agrimo link if we can inject it */
+body:after {
+  content: '';
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+}
